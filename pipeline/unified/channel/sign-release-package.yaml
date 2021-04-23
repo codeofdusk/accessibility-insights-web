@@ -19,6 +19,10 @@ jobs:
 
           - template: ../download-electron-mirror.yaml
 
+          - script: yarn build:unified
+            displayName: build:unified
+            timeoutInMinutes: 5
+
           - task: DownloadPipelineArtifact@2
             inputs:
                 source: 'specific'
