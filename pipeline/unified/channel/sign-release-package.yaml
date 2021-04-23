@@ -27,7 +27,7 @@ jobs:
                 artifact: ${{ parameters.unsignedArtifactName }}
                 path: '$(System.DefaultWorkingDirectory)/drop/electron/unified-${{ parameters.channel }}'
 
-          - script: yarn pack:unified:unified-${{ parameters.channel }}
+          - script: yarn pack:unified-${{ parameters.channel }}
             displayName: yarn pack:unified-${{ parameters.channel }}
 
           - task: CopyFiles@2
