@@ -558,6 +558,7 @@ module.exports = function (grunt) {
                     configFile,
                     '--dir',
                 ],
+                opts: { env: { DEBUG: 'electron-builder' } },
             },
             (error, result, code) => {
                 if (error) {
@@ -565,6 +566,10 @@ module.exports = function (grunt) {
                         `electron-builder exited with error code ${code}:\n\n${result.stdout}`,
                         code,
                     );
+                }
+
+                if (result) {
+                    console.log(result.stdout);
                 }
 
                 taskDoneCallback();
@@ -608,6 +613,7 @@ module.exports = function (grunt) {
                     '--pd',
                     unpackedPath,
                 ],
+                opts: { env: { DEBUG: 'electron-builder' } },
             },
             (error, result, code) => {
                 if (error) {
@@ -615,6 +621,10 @@ module.exports = function (grunt) {
                         `electron-builder exited with error code ${code}:\n\n${result.stdout}`,
                         code,
                     );
+                }
+
+                if (result) {
+                    console.log(result.stdout);
                 }
 
                 taskDoneCallback();
