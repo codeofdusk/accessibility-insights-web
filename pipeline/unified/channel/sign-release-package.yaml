@@ -17,7 +17,7 @@ jobs:
       steps:
           - template: ../../install-node-prerequisites.yaml
 
-          - template: ./download-electron-mirror.yaml
+          - template: ../download-electron-mirror.yaml
 
           - task: DownloadPipelineArtifact@2
             inputs:
