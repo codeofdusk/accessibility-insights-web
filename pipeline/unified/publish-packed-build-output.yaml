@@ -9,9 +9,7 @@ steps:
       displayName: 'copy package files to upload'
       inputs:
           SourceFolder: ${{ parameters.packedOutputPath }}
-          Contents: |
-              latest*.yml
-              Accessibility?Insights?for?Android*.*
+          Contents: '**'
           TargetFolder: '$(System.ArtifactStagingDirectory)/${{ parameters.artifactName }}'
           CleanTargetFolder: true
 

@@ -9,9 +9,7 @@ trigger: none
 
 strategy:
     matrix:
-        windows: { vmImage: 'windows-latest', platform: 'windows' }
         mac: { vmImage: 'macOS-10.15', platform: 'mac' }
-        linux: { vmImage: 'ubuntu-18.04', platform: 'linux' }
 
 pool:
     vmImage: $(vmImage)
@@ -38,10 +36,6 @@ steps:
           outputfile: '$(System.DefaultWorkingDirectory)/src/NOTICE.html'
           outputformat: html
       timeoutInMinutes: 5
-
-    - template: ./unified-e2e-test-interactive.yaml
-
-    - template: ./unified-e2e-publish-results.yaml
 
     - script: yarn build:unified:all --unified-version=$(Build.BuildNumber) --unified-canary-instrumentation-key=$(UnifiedCanaryInstrumentationKey) --unified-insider-instrumentation-key=$(UnifiedInsiderInstrumentationKey) --unified-prod-instrumentation-key=$(UnifiedProdInstrumentationKey)
       displayName: yarn build:unified:all
