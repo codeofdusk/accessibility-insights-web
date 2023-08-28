@@ -124,7 +124,7 @@ function AdjustNamespace([string]$provider, [string]$rawNamespace) {
     return $rawNamespace
 }
 
-function GetUri([string]$branchName){
+function GetCoordinates([string]$branchName){
     $elements = $branchName.Split('/')
 
     if ($elements[0] -ne 'dependabot') {
@@ -157,7 +157,7 @@ function GetUri([string]$branchName){
     }
 
 
-    return "https://api.clearlydefined.io/definitions/$type/$provider/$namespace/$packageName/$packageVersion"
+    return "$type/$provider/$namespace/$packageName/$packageVersion"
 }
 
 function WriteFormattedError([string]$pipelineType, [string]$message) {
@@ -174,19 +174,40 @@ function WriteFormattedError([string]$pipelineType, [string]$message) {
     }
 }
 
+function RequestHarvest([string]$coordinates) {
+    $body = @{
+        tool = "package"
+        coordinates = "$coordinates"
+    }
+
+    $URI = "https://api.clearlydefined.io/harvest"
+
+    $resp = Invoke-RestMethod -Method Post -Uri $URI -Body ($body|ConvertTo-Json) -ContentType "application/json"
+
+    if ($resp -ne "Created") {
+        throw "ClearlyDefined does not have a definition for this package version, and information harvesting could not be requested automatically ($resp). Please request manually at clearlydefined.io."
+    }
+}
+
 try {
     $pipelineType = GetPipelineType $PipelineType
     $branchName = GetBranchName $pipelineType $BranchName
 
     Write-Verbose "Resolved Inputs: PipeLineType=$pipelineType, BranchName=$branchName"
 
-    $uri = GetUri($branchName)
+    $coords = GetCoordinates($branchName)
+    $ENDPOINT = "https://api.clearlydefined.io/definitions/"
+    $uri = "$ENDPOINT$coords"
     Write-Host "Getting data from $uri"
     $response = Invoke-RestMethod -Uri $uri -Method Get -ErrorAction Stop
 
     if(Get-Member -inputobject $response -name "files" -Membertype Properties) {
         Write-Host "ClearlyDefined has a definition for this package version."
         Exit 0
+    }
+    else
+    {
+        RequestHarvest $coords
     }
 }
 catch {
@@ -199,11 +220,10 @@ WriteFormattedError $pipelineType "ClearlyDefined does not have a definition for
 If this is a development component, you may safely ignore this warning.
 
 If this is a production component, please do the following:
-1. Request that ClearlyDefined harvest information for this package version
-2. Wait for the harvest to complete -- check https://clearlydefined.io
-3. Re-run the failed build
-4. Once the PR build passes, merge the PR
-5. If necessary, add this package to clearly-defined-exclusions.json and include it in your PR.
+1. Wait a while for ClearlyDefined to harvest information for this package version – check status at https://clearlydefined.io/definitions/$coords
+2. Once the package is listed as `"harvested`", re-run the failed build
+3. Once the PR build passes, merge the PR
+4. If necessary, add this package to clearly-defined-exclusions.json and include it in your PR.
    Merge the PR once the build passes."
     
 Exit 2
