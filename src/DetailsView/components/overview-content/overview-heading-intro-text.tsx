@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import { NamedFC } from '../../../common/react/named-fc';
 import { productName } from 'content/strings/application';
 import styles from './overview-heading.scss';
 
-export const overviewHeadingIntroTextForAssessment = `
-                <div className={styles.overviewHeadingContent}>
+export const overviewHeadingIntroTextForAssessment = NamedFC('overviewHeadingIntroTextForAssessment', () => {
+    return (
+        <div className={styles.overviewHeadingContent}>
                     This page contains a summary that indicates the progress of your assessment. An
                     assessment is a manual experience in which you navigate through a set of tests
                     that cover all WCAG 2.1 AA success criteria. Each test has one or more
@@ -19,6 +21,6 @@ export const overviewHeadingIntroTextForAssessment = `
                     instances to evaluate and highlighting them on the screen. {productName} also
                     allows you to manually record failure instances.
                 </div>
-`;
+);});
 
 export const overviewHeadingIntroTextForQuickAssess = ``;
