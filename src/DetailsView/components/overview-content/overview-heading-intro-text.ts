@@ -6,6 +6,4 @@ export const overviewHeadingIntroTextForAssessment = `This page contains a summa
                     that cover all WCAG 2.1 AA success criteria. Each test has one or more
                     requirements that can be:`;
 
-export const overviewHeadingIntroTextForQuickAssess = ` This page contains a summary that indicates the progress of your Quick Assess
-                    review. Quick Assess is a limited version of the Assessment experience where you
-                    will navigate through a set of 10 requirements. These requirements can be:`;
+export const overviewHeadingIntroTextForQuickAssess = `Each test has one or more requirements that can be:`;
