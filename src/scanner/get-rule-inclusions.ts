@@ -15,6 +15,10 @@ export const explicitRuleOverrides: DictionaryStringTo<RuleIncluded> = {
         status: 'included',
         reason: 'best practice rule that was investigated with no known false positives, implemented as an automated check.',
     },
+    'aria-braille-equivalent': {
+        status: 'included-always',
+        reason: 'Testing 1 2 12',
+    },
     'audio-caption': {
         status: 'included',
         reason: 'for parity with video-caption, which axe-core includes by default',
